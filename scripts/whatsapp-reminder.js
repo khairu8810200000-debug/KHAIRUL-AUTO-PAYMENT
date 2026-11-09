@@ -28,9 +28,14 @@ function maskPhone(value) {
 
 async function main() {
   const raw = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
-  if (!raw) throw new Error("Missing FIREBASE_SERVICE_ACCOUNT_JSON secret.");
-  const serviceAccount = JSON.parse(raw);
-  admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+  if (raw) {
+    // Legacy credential path; prefer GitHub OIDC + Workload Identity Federation.
+    const serviceAccount = JSON.parse(raw);
+    admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+  } else {
+    // Uses Application Default Credentials supplied by google-github-actions/auth.
+    admin.initializeApp({ credential: admin.credential.applicationDefault() });
+  }
   const db = admin.firestore();
 
   const [customersSnap, vehiclesSnap, paymentsSnap] = await Promise.all([
