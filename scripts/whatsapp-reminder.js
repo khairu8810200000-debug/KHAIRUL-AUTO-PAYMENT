@@ -19,10 +19,10 @@ function dayInMalaysia(date = new Date()) {
   }).format(date));
 }
 function normalizeName(value) {
-  return String(value || "").trim().toLocaleLowerCase("ms-MY").replace(/\\s+/g, " ");
+  return String(value || "").trim().toLocaleLowerCase("ms-MY").replace(/\s+/g, " ");
 }
 function maskPhone(value) {
-  const s = String(value || "").replace(/\\s+/g, "");
+  const s = String(value || "").replace(/\s+/g, "");
   return s.length > 4 ? `${"*".repeat(Math.max(0, s.length - 4))}${s.slice(-4)}` : "(tiada)";
 }
 
