@@ -1,0 +1,24 @@
+name: KHAIRUL AUTO PAYMENT - Dry Run
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-reminders:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install Firebase Admin SDK
+        run: npm install --no-save firebase-admin
+      - name: Check reminders (dry run only)
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+        run: node scripts/whatsapp-reminder.js
